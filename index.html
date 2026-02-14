@@ -1,35 +1,249 @@
-
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Valentine's Surprise</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-      body {
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-      }
-      .bg-transition {
-        transition: background-color 0.8s ease-in-out;
-      }
-    </style>
-    <script type="importmap">
-    {
-      "imports": {
-        "react": "https://esm.sh/react@^19.2.4",
-        "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
-        "react/": "https://esm.sh/react@^19.2.4/"
-      }
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Will you be my Valentine?</title>
+
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    height: 100vh;
+    background: #E63946;
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    transition: background 0.8s ease;
+}
+
+/* CARD */
+#card {
+    width: 300px;
+    height: 300px;
+    background: #FFFFFF;
+    border-radius: 28px;
+    box-shadow: 0px 20px 60px rgba(0,0,0,0.15);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.7s ease;
+    position: relative;
+    z-index: 10;
+}
+
+/* QUESTION TEXT */
+#question {
+    font-size: 26px;
+    font-weight: 600;
+    color: #1D1D1F;
+    text-align: center;
+    padding: 20px;
+}
+
+/* BUTTONS */
+#buttons {
+    margin-top: 10px;
+}
+
+button {
+    padding: 12px 24px;
+    margin: 10px;
+    font-size: 16px;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    font-family: Poppins;
+    transition: transform 0.2s ease;
+}
+
+button:hover {
+    transform: scale(1.1);
+}
+
+#yes {
+    background: #FF4D6D;
+    color: white;
+}
+
+#no {
+    background: white;
+    color: #E63946;
+    border: 2px solid #E63946;
+    position: absolute;
+}
+
+/* HEART SHAPE */
+.heart {
+    width: 120px;
+    height: 120px;
+    background: #FF4D6D;
+    position: relative;
+    transform: rotate(45deg) scale(0);
+    animation: heartAppear 0.7s forwards ease;
+}
+
+.heart::before,
+.heart::after {
+    content: "";
+    width: 120px;
+    height: 120px;
+    background: #FF4D6D;
+    border-radius: 50%;
+    position: absolute;
+}
+
+.heart::before {
+    top: -60px;
+    left: 0;
+}
+
+.heart::after {
+    left: -60px;
+    top: 0;
+}
+
+@keyframes heartAppear {
+    to {
+        transform: rotate(45deg) scale(1.2);
     }
-    </script>
-  </head>
-  <body>
-    <div id="root"></div>
-  </body>
+}
+
+/* FLOWERS */
+.flower {
+    position: absolute;
+    font-size: 28px;
+    animation: floatUp linear forwards;
+}
+
+@keyframes floatUp {
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(-110vh);
+        opacity: 0;
+    }
+}
+
+/* BACKGROUND TEXT */
+.bgText {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    font-size: 120px;
+    font-weight: 800;
+    color: #FF4D6D;
+    opacity: 0.08;
+    animation: moveUp 8s linear infinite;
+    white-space: nowrap;
+}
+
+@keyframes moveUp {
+    from {
+        transform: translateY(100vh);
+    }
+    to {
+        transform: translateY(-100vh);
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="card">
+    <div id="question">Will you be my Valentine?</div>
+    <div id="buttons">
+        <button id="yes">Yes</button>
+        <button id="no">No</button>
+    </div>
+</div>
+
+<script>
+
+const yesBtn = document.getElementById("yes");
+const noBtn = document.getElementById("no");
+const card = document.getElementById("card");
+const body = document.body;
+
+/* NO BUTTON ESCAPE */
+noBtn.addEventListener("mouseover", () => {
+
+    const x = Math.random() * (window.innerWidth - 100);
+    const y = Math.random() * (window.innerHeight - 50);
+
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+
+});
+
+/* YES BUTTON */
+yesBtn.addEventListener("click", () => {
+
+    /* background white */
+    body.style.background = "#FFFFFF";
+
+    /* turn card into heart */
+    card.innerHTML = "";
+    card.style.background = "transparent";
+    card.style.boxShadow = "none";
+
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+
+    card.appendChild(heart);
+
+    /* flower burst */
+    for(let i=0;i<40;i++){
+
+        const flower = document.createElement("div");
+
+        flower.classList.add("flower");
+
+        const flowers = ["🌸","🌹","🌺","💐","🌷"];
+
+        flower.innerText = flowers[Math.floor(Math.random()*flowers.length)];
+
+        flower.style.left = Math.random()*100 + "vw";
+        flower.style.animationDuration = (Math.random()*3+3) + "s";
+
+        body.appendChild(flower);
+
+        setTimeout(()=>{
+            flower.remove();
+        },6000);
+    }
+
+    /* background text */
+    for(let i=0;i<6;i++){
+
+        const text = document.createElement("div");
+
+        text.classList.add("bgText");
+
+        text.style.top = (i*150)+"px";
+
+        text.innerText = "YOU MADE MY DAY ❤️";
+
+        body.appendChild(text);
+    }
+
+});
+
+</script>
+
+</body>
 </html>
